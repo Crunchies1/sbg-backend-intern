@@ -5,8 +5,12 @@
 #include <map>
 #include <algorithm>
 #include <iostream>
+// Here we define magic numbers that are used in the program.
+// This refers to the total number of items on sale.
 #define NUM_ITEMS 8
+// This refers to the number of items in a set.
 #define SET_ITEMS 3
+// These refer to the type of item in the set.
 #define MAIN 2
 #define SNACK 1
 #define DRINK 0
@@ -34,11 +38,13 @@ class Checkout {
         // Add item to the basket.
         int add(int item, int quantity)
         {
+            // Look for the item being added, if it is already in the map, update quantity.
             map<int, int>::iterator it = basket.find(item); 
             if (it != basket.end()) 
             {
                 it->second += quantity;
             } 
+            // Otherwise, insert item into the map.
             else 
             {
                 basket.insert(make_pair(item, quantity));
@@ -48,6 +54,7 @@ class Checkout {
         // Remove item from the basket.
         int remove(int item, int quantity) 
         {
+            // Look for the item being added, if it is already in the map, update quantity to a limit of 0.
             map<int, int>::iterator it = basket.find(item); 
             if (it != basket.end()) 
             {   
@@ -60,6 +67,7 @@ class Checkout {
                     it->second -= quantity;
                 }
             } 
+            // Otherwise, print error message.
             else 
             {
                 cout << "This item isn't in the basket!";
@@ -80,12 +88,15 @@ class Checkout {
             // Print out the individual items costs.
             cout << "\n ===== RECEIPT ===== \n";
 
+            // Loop through the basket items.
             map<int, int>::iterator it;
-
             for (it = basket.begin(); it != basket.end(); it++)
             {
+                // Store the item number and quantity being purchased.
                 int item = it->first;
                 int quant = it->second;
+
+                // Check whether the item purchased has any deal associated with it.
                 switch(deal_type[item]) 
                 {
                     // This case is used to check for the "buy 3 for the cost of 2" deal.
