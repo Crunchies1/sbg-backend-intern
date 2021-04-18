@@ -2,7 +2,7 @@
 
 ### Thoughts
 
-This project was enjoyable, as I got to learn more about the C++ language. However, I realize that I've only scratched the surface with this, so I will do more to increase my knowledge of the C++ language.
+This project was very enjoyable, as I got to learn more about the C++ language. However, I realize that I've only scratched the surface with this, so I will do more to increase my knowledge of the C++ language.
 
 ## Getting Started
 
