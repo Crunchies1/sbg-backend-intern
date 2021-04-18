@@ -1,10 +1,11 @@
 #pragma once
-#include <string>
-#include <numeric>
-#include <vector>
-#include <map>
 #include <algorithm>
 #include <iostream>
+#include <map>
+#include <numeric>
+#include <string>
+#include <tuple>
+#include <vector>
 // Here we define magic numbers that are used in the program.
 // This refers to the total number of items on sale.
 #define NUM_ITEMS 8
@@ -22,10 +23,18 @@ class Checkout {
         // Basket stores a list of items possibly being purchased.
         map<int, int> basket = {};
 
-        // These arrays store the names, deal types and prices of items.
-        string names[NUM_ITEMS] = {"Apple", "Pear", "Coffee", "Juice", "Chicken", "Lobster", "Sweets", "Burger"};
-        int deal_type[NUM_ITEMS] = {0, 1, 2, 2, 3, 4, 3, 4};
-        float prices[NUM_ITEMS] = {2.50, 3.00, 5.00, 6.00, 7.50, 10.00, 4.00, 7.00};
+        // This array stores the names, deal types and prices of items.
+        tuple<string, float, int> item_list[NUM_ITEMS] = 
+        {
+            make_tuple("Apple", 2.50, 0),
+            make_tuple("Pear", 3.00, 1),
+            make_tuple("Coffee", 5.00, 2),
+            make_tuple("Juice", 6.00, 2),
+            make_tuple("Chicken", 7.50, 3),
+            make_tuple("Lobster", 10.00, 4),
+            make_tuple("Sweets", 4.00, 3),
+            make_tuple("Burger", 7.00, 4)
+        };
 
         // Empty constructor, if there is no basket being provided.
         Checkout() {}
@@ -97,17 +106,17 @@ class Checkout {
                 int quant = it->second;
 
                 // Check whether the item purchased has any deal associated with it.
-                switch(deal_type[item]) 
+                switch(get<2>(item_list[item])) 
                 {
                     // This case is used to check for the "buy 3 for the cost of 2" deal.
                     case 1:
-                        disc += (quant / 3) * prices[item];
+                        disc += (quant / 3) * get<1>(item_list[item]);
                         break;
 
                     // This case is used to tally up DRINKS, to use for set meal calculation later.
                     case 2:
                         for (int b = 0; b < quant; b++) {
-                            set_prices.push_back(prices[item]);
+                            set_prices.push_back(get<1>(item_list[item]));
                         }
                         set_item_count[DRINK] += quant;
                         break;
@@ -115,7 +124,7 @@ class Checkout {
                     // This case is used to tally up SNACKS.
                     case 3:
                         for (int b = 0; b < quant; b++) {
-                            set_prices.push_back(prices[item]);
+                            set_prices.push_back(get<1>(item_list[item]));
                         }
                         set_item_count[SNACK] += quant;
                         break;
@@ -123,17 +132,17 @@ class Checkout {
                     // This case is used to tally up MAINS.
                     case 4:
                         for (int b = 0; b < quant; b++) {
-                            set_prices.push_back(prices[item]);
+                            set_prices.push_back(get<1>(item_list[item]));
                         }
                         set_item_count[MAIN] += quant;
                         break;
                 }
 
                 // Print out the item name and quantity bought, along with the total price.
-                cout << names[item] << " x " << quant << ": $" << quant * prices[item] << "\n";
+                cout << get<0>(item_list[item]) << " x " << quant << ": $" << quant * get<1>(item_list[item]) << "\n";
 
                 // Update the total price.
-                total += quant * prices[item];
+                total += quant * get<1>(item_list[item]);
 
             }
 
