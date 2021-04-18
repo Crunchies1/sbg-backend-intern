@@ -5,10 +5,14 @@ int main()
 {
     Checkout checkout = Checkout();
 
-    checkout.add(0, 2);
-    checkout.add(1, 3);
+    checkout.add(0, 0);
+    checkout.add(1, 6);
+    checkout.add(2, 1);
     checkout.add(3, 1);
+    checkout.add(4, 2);
+    checkout.add(5, 1);
+    checkout.add(6, 1);
+    checkout.add(7, 1);
 
-    float total = checkout.price();
-    std::cout << "Total price: $" << total;
+    checkout.price();
 }
